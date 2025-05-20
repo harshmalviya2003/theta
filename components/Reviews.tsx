@@ -84,9 +84,9 @@ export function Reviews() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center text-black mb-16"
         >
-          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+          <h2 className="text-4xl text-black font-bold tracking-tight sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
             Trusted by Innovators
           </h2>
           <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
