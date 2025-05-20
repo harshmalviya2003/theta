@@ -11,29 +11,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 export default function CoreComponents() {
   const panelsContainerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<HTMLDivElement[]>([]);
+  const tweenRef = useRef<GSAPTween | null>(null);
 
   // GSAP Animation Setup
   useEffect(() => {
     const panelsContainer = panelsContainerRef.current;
     const panels = panelsRef.current;
 
-    // Anchor navigation
-    document.querySelectorAll('.anchor').forEach((anchor) => {
-      anchor.addEventListener('click', (e: Event) => {
-        e.preventDefault();
-        const targetElem = document.querySelector((e.target as HTMLAnchorElement).getAttribute('href')!);
-        let y: number | HTMLElement = targetElem!;
-        if (targetElem && panelsContainer?.contains(targetElem)) {
-          const totalScroll = tween.scrollTrigger.end - tween.scrollTrigger.start;
-          const totalMovement = (panels.length - 1) * targetElem.offsetWidth;
-          y = Math.round(tween.scrollTrigger.start + (targetElem.offsetLeft / totalMovement) * totalScroll);
-        }
-        gsap.to(window, {
-          scrollTo: { y, autoKill: false },
-          duration: 1,
-        });
-      });
-    });
+    if (!panelsContainer || panels.length === 0) return;
 
     // Horizontal scrolling animation
     const tween = gsap.to(panels, {
@@ -49,8 +34,34 @@ export default function CoreComponents() {
           inertia: false,
           duration: { min: 0.1, max: 0.1 },
         },
-        end: () => `+=${panelsContainer!.offsetWidth - window.innerWidth}`,
+        end: () => `+=${panelsContainer.offsetWidth - window.innerWidth}`,
       },
+    });
+
+    tweenRef.current = tween;
+
+    // Anchor navigation
+    document.querySelectorAll('.anchor').forEach((anchor) => {
+      anchor.addEventListener('click', (e: Event) => {
+        e.preventDefault();
+        const targetId = (e.target as HTMLAnchorElement).getAttribute('href');
+        if (!targetId || !tween.scrollTrigger) return;
+        
+        const targetElem = document.querySelector(targetId) as HTMLElement;
+        if (!targetElem) return;
+
+        let y: number | HTMLElement = targetElem;
+        if (targetElem && panelsContainer.contains(targetElem)) {
+          const totalScroll = tween.scrollTrigger.end - tween.scrollTrigger.start;
+          const totalMovement = (panels.length - 1) * targetElem.offsetWidth;
+          y = Math.round(tween.scrollTrigger.start + (targetElem.offsetLeft / totalMovement) * totalScroll);
+        }
+        
+        gsap.to(window, {
+          scrollTo: { y, autoKill: false },
+          duration: 1,
+        });
+      });
     });
 
     // Cleanup on unmount
