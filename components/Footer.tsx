@@ -1,8 +1,9 @@
 'use client';
 
-import { Bot, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 
 const container = {
   hidden: { opacity: 0 },
@@ -83,8 +84,8 @@ export function Footer() {
               whileHover={{ rotate: 10 }}
               className="flex items-center"
             >
-              <Bot className="h-6 w-6 mr-2 text-primary" />
-              <span className="font-bold text-black text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+              <Image src="/logo.png" alt="AIVision" width={20} height={20} />
+              <span className="font-bold text-black text-lg bg-clip-text  bg-gradient-to-r from-primary to-primary/70">
                 Theta
               </span>
             </motion.div>

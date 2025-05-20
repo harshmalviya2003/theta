@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export function Hero() {  
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-background">
+    <section className="relative md:mt-0 pt-16 w-full h-screen overflow-hidden bg-background">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full">
         <video
